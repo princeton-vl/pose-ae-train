@@ -5,6 +5,8 @@ Multi-person pose estimation with PyTorch based on:
 **Associative Embedding: End-to-end Learning for Joint Detection and Grouping.**
 [Alejandro Newell](http://www-personal.umich.edu/~alnewell/), Zhiao Huang, and [Jia Deng](http://web.eecs.umich.edu/~jiadeng/). *Neural Information Processing Systems (NIPS)*, 2017. 
 
+(A pretrained model in TensorFlow is also available here: https://github.com/umich-vl/pose-ae-demo)
+
 ## Getting Started
 
 This repository provides everything necessary to train and evaluate a multi-person pose estimation model on COCO keypoints. If you plan on training your own model from scratch, we highly recommend using multiple GPUs. We also provide a [pretrained model](https://umich.box.com/s/nptgu9r46xudtjn7o8viksryiztdnqwt).
