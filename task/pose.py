@@ -124,12 +124,12 @@ def make_network(configs):
             logger.write(toprint)
             logger.flush()
 
+            optimizer = train_cfg['optimizer']
             if batch_id == 200000:
                 ## decrease the learning rate after 200000 iterations
                 for param_group in optimizer.param_groups:
                     param_group['lr'] = 1e-5
 
-            optimizer = train_cfg['optimizer']
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
