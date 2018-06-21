@@ -43,8 +43,6 @@ def match_by_tag(inp, params, pad=False):
             actualTags_key = actualTags
             actualTags = [np.mean(dic2[i], axis = 0) for i in actualTags]
 
-            if params.ignore_too_much and len(actualTags) == params.max_num_people:
-                continue
             diff = ((joints[:, None, 3:] - np.array(actualTags)[None, :, :])**2).mean(axis = 2) ** 0.5
             if diff.shape[0]==0:
                 continue
@@ -63,6 +61,8 @@ def match_by_tag(inp, params, pad=False):
                     dic[actualTags_key[col]][ptIdx] = joints[row]
                     dic2[actualTags_key[col]].append(tags[row])
                 else:
+                    if params.ignore_too_much and len(actualTags) == params.max_num_people:
+                        continue
                     key = tags[row][0]
                     dic.setdefault(key, np.copy(default_))[ptIdx] = joints[row]
                     dic2[key] = [tags[row]]
