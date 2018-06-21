@@ -97,6 +97,11 @@ def make_network(configs):
         net = config['inference']['net']
         config['batch_id'] = batch_id
 
+        if phase == 'train':
+            net = net.train()
+        else:
+            net = net.eval()
+
         if phase != 'inference':
             result = net(inputs['imgs'], **{i:inputs[i] for i in inputs if i!='imgs'})
 
@@ -129,10 +134,11 @@ def make_network(configs):
                 for param_group in optimizer.param_groups:
                     param_group['lr'] = 1e-5
 
-            optimizer = train_cfg['optimizer']
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            if phase == 'train':
+                optimizer = train_cfg['optimizer']
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
             return None
         else:
             out = {}
