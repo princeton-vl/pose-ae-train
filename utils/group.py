@@ -61,7 +61,7 @@ def match_by_tag(inp, params, pad=False):
                     dic[actualTags_key[col]][ptIdx] = joints[row]
                     dic2[actualTags_key[col]].append(tags[row])
                 else:
-                    if params.ignore_too_much and len(actualTags) == params.max_num_people:
+                    if params.ignore_too_much and len(list(dic.keys())) == params.max_num_people:
                         continue
                     key = tags[row][0]
                     dic.setdefault(key, np.copy(default_))[ptIdx] = joints[row]
