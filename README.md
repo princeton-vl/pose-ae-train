@@ -9,7 +9,7 @@ Multi-person pose estimation with PyTorch based on:
 
 ## Getting Started
 
-This repository provides everything necessary to train and evaluate a multi-person pose estimation model on COCO keypoints. If you plan on training your own model from scratch, we highly recommend using multiple GPUs. We also provide a [pretrained model](https://umich.box.com/s/nptgu9r46xudtjn7o8viksryiztdnqwt).
+This repository provides everything necessary to train and evaluate a multi-person pose estimation model on COCO keypoints. If you plan on training your own model from scratch, we highly recommend using multiple GPUs. We also provide a [pretrained model](https://drive.google.com/file/d/1xTiTAyEcd5vj3Ru8Uq_0AvlV-pOOlm8e/view?usp=sharing).
 
 Requirements:
 
@@ -57,7 +57,7 @@ This repository includes a predefined training/validation split that we use in o
 
 #### Pretrained model
 
-To evaluate on the pretrained model, you can download it from [here](https://umich.box.com/s/nptgu9r46xudtjn7o8viksryiztdnqwt) and unpack the file into ```exp/```. Then call:
+To evaluate on the pretrained model, you can download it from [here](https://drive.google.com/file/d/1xTiTAyEcd5vj3Ru8Uq_0AvlV-pOOlm8e/view?usp=sharing) and unpack the file into ```exp/```. Then call:
 
 ```python test.py -c pretrained -m single```
 
