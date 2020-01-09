@@ -97,11 +97,6 @@ def make_network(configs):
         net = config['inference']['net']
         config['batch_id'] = batch_id
 
-        if phase == 'train':
-            net = net.train()
-        else:
-            net = net.eval()
-
         if phase != 'inference':
             result = net(inputs['imgs'], **{i:inputs[i] for i in inputs if i!='imgs'})
 
