@@ -11,3 +11,4 @@ _ext
 tmp
 *.o*
 *~
+*.idea*

@@ -82,7 +82,7 @@ int my_lib_loss_forward(THCudaTensor *Tag, THLongTensor *keypoints, THFloatTenso
                 people_pull_loss += tmp/l;
             }
             output_tmp[1] += people_pull_loss/current_joint;
-            current_people++;
+            `current_people`++;
         }
         if(current_people==0)
             continue;
