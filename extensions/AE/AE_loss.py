@@ -6,20 +6,15 @@ from torch.autograd import Function
 class AElossFunction(Function):
     @staticmethod
     def forward(ctx, tags, keypoints):
-        # tags = tags.cpu()
-        # keypoints = keypoints.cpu()
         with torch.cuda.device(tags.get_device()):
             batch_size = tags.size()[0]
             tag_dim = tags.size()[2]
             num_people = keypoints.size()[1]
-            num_joint = keypoints.size()[2]
 
             output = torch.zeros(torch.Size((batch_size, 2)), device=tags.get_device())
             mean_tags = torch.zeros(torch.Size((batch_size, num_people, tag_dim + 1)), device=tags.get_device())
-            # mean_tags: (batch_size x num_people x (tag_dim + 1)), keeps both mean tag and number of joints (for backprop)
-            assert output.device == mean_tags.device
-            assert output.device == tags.device
-            assert output.device == keypoints.device
+            # mean_tags: (batch_size x num_people x (tag_dim + 1)),
+            #            keeps both mean tag and number of joints (for backprop)
             for b in range(batch_size):
                 cur_people_count = 0
                 # pull loss
@@ -28,11 +23,8 @@ class AElossFunction(Function):
                     len_valid_kpts = len(valid_keypoints)
                     if len_valid_kpts > 0:
                         valid_tags = tags[b, valid_keypoints, 0]
-                        # print(valid_tags.dtype)
-                        # print(torch.mean(valid_tags).dtype)
                         mean_tags[b, p, 0] = torch.mean(valid_tags)
                         mean_tags[b, p, 1] = len_valid_kpts
-                        # print(valid_tags.size(), mean_tags[b, p, 0].size(), output[b, 1].size())
                         output[b, 1] += torch.sum(torch.square(valid_tags - mean_tags[b, p, 0])) / len_valid_kpts
                         cur_people_count += 1
                 if cur_people_count == 0:
@@ -53,14 +45,9 @@ class AElossFunction(Function):
     def backward(ctx, grad_output):
         tags, keypoints, mean_tags = ctx.saved_tensors
         with torch.cuda.device(tags.get_device()):
-            # tags = tags.cpu()
-            # keypoints = keypoints.cpu()
-            # mean_tags = mean_tags.cpu()
-            # with torch.cuda.device(tags.get_device()):
             batch_size = tags.size()[0]
             tag_dim = tags.size()[2]
             num_people = keypoints.size()[1]
-            num_joint = keypoints.size()[2]
 
             grad_input = torch.zeros(tags.size(), device=tags.get_device())
             mean_grad = torch.zeros(num_people, device=tags.get_device())
@@ -90,6 +77,7 @@ class AElossFunction(Function):
                         grad_input[b, valid_keypoints, 0] += grad
                         grad_input[b, valid_keypoints, 0] += mean_grad[p] / mean_tags[b, p, 1]
 
+            # use the following two lines if you need to debug the backward loss
             # import pdb
             # pdb.set_trace()
             return grad_input, torch.zeros(keypoints.size())
