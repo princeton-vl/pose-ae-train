@@ -13,7 +13,7 @@ __config__ = {
     'data_provider': 'data.coco_pose.dp',
     'network': 'models.posenet.PoseNet',
     'inference': {
-        'nstack': 1,  # TODO: Change back to 4
+        'nstack': 4,  # If your GPU memory is not enough decrease this to 3
         'inp_dim': 256,
         'oup_dim': 68,
         'num_parts': 17,
@@ -22,7 +22,7 @@ __config__ = {
     },
 
     'train': {
-        'batchsize': 32,
+        'batchsize': 32,  # If your GPU memory is not enough decrease this to 16
         'input_res': 512,
         'output_res': 128,
         'train_iters': 1000,

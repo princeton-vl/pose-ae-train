@@ -14,6 +14,8 @@ import torch
 import importlib
 import argparse
 
+torch.cuda.empty_cache()
+
 def parse_command_line():
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--task', type=str, default='pose', help='task to be trained')

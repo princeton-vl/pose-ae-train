@@ -102,8 +102,8 @@ class HeatmapParser():
         return list(map(match, zip(tag_k, loc_k, val_k)))
 
     def calc(self, det, tag):
-        det = torch.autograd.Variable(torch.Tensor(det), volatile=True)
-        tag = torch.autograd.Variable(torch.Tensor(tag), volatile=True)
+        det = torch.tensor(det, requires_grad=True)
+        tag = torch.tensor(tag, requires_grad=True)
 
         det = self.nms(det)
         h = det.size()[2]
