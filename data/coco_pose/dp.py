@@ -119,6 +119,8 @@ class Dataset(torch.utils.data.Dataset):
 
     def preprocess(self, data):
         # random hue and saturation
+        if len(data.shape) < 3 or data.shape[2] < 3:
+            print()
         data = cv2.cvtColor(data, cv2.COLOR_RGB2HSV);
         delta = (np.random.random() * 2 - 1) * 0.2
         data[:, :, 0] = np.mod(data[:,:,0] + (delta * 360 + 360.), 360.)

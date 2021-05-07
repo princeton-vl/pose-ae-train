@@ -1,3 +1,4 @@
+import shutil
 import sys
 import time
 import os
@@ -12,6 +13,8 @@ import pickle
 import torch
 import importlib
 import argparse
+
+torch.cuda.empty_cache()
 
 def parse_command_line():
     parser = argparse.ArgumentParser()

@@ -1,13 +1,13 @@
 import numpy as np
 import pickle
 import h5py
-from scipy.misc import imread
+from imageio import imread
 import os 
 from pycocotools.coco import COCO
 from pycocotools import mask 
 
-data_dir = 'coco/images'
-ann_path = 'coco/annotations/person_keypoints_train2014.json'
+data_dir = '/mnt/hdd1/Datasets/COCO'  # 'coco/images'
+ann_path = '/mnt/hdd1/Datasets/COCO/annotations/person_keypoints_train2014.json'
 ref_dir = os.path.dirname(__file__)
 
 assert os.path.exists(data_dir)
@@ -53,18 +53,21 @@ basic_order = [part_idx[i] for i in basic_order]
 def initialize(opt):
     return
 
+
 def image_path(idx):
     img_info = coco.loadImgs(img_ids[idx])[0]
     path = img_info['file_name'].split('_')[1] + '/' + img_info['file_name']
     return os.path.join(data_dir, path)
 
+
 def load_image(idx):
-    return imread(image_path(idx),mode='RGB')
+    return imread(image_path(idx), as_gray=False, pilmode="RGB")  # ,mode='RGB'
 
 
 def num_objects(idx, anns=None, should_greater_than_1 = False):
     if anns is None: anns = get_anns(idx)
     return len(anns)
+
 
 def setup_val_split(opt = None):
     if coco is None:
@@ -86,11 +89,13 @@ def setup_val_split(opt = None):
             train.append(i)
     return np.array(train), np.array([valid[i] for i in valid_id if i in valid])
 
+
 def get_anns(idx):
     ann_ids = coco.getAnnIds(imgIds=img_ids[idx])
     tmp_ann = coco.loadAnns(ann_ids)
     # Filter tmp_ann for people with no keypoints annotated
     return [tmp_ann[i] for i in range(len(tmp_ann)) if tmp_ann[i]['num_keypoints'] > 0]
+
 
 def get_mask(idx):
     ann_ids = coco.getAnnIds(imgIds=img_ids[idx])
@@ -102,6 +107,7 @@ def get_mask(idx):
             rle = mask.frPyObjects(j['segmentation'], img['height'], img['width'])
             m += mask.decode(rle)
     return m < 0.5
+
 
 def get_keypoints(idx, anns=None):
     if anns is None: anns = get_anns(idx)

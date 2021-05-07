@@ -13,6 +13,7 @@ valid_filepath = ref_dir + '/validation.pkl'
 
 parser = HeatmapParser(detection_val=0.1)
 
+
 def refine(det, tag, keypoints):
     """
     Given initial keypoint predictions, we identify missing joints
@@ -41,27 +42,28 @@ def refine(det, tag, keypoints):
         x += 0.5
         y += 0.5
 
-        if tmp[xx, min(yy+1, det.shape[1]-1)]>tmp[xx, max(yy-1, 0)]:
-            y+=0.25
+        if tmp[xx, min(yy+1, det.shape[1]-1)] > tmp[xx, max(yy-1, 0)]:
+            y += 0.25
         else:
-            y-=0.25
+            y -= 0.25
 
-        if tmp[min(xx+1, det.shape[0]-1), yy]>tmp[max(0, xx-1), yy]:
-            x+=0.25
+        if tmp[min(xx+1, det.shape[0]-1), yy] > tmp[max(0, xx-1), yy]:
+            x += 0.25
         else:
-            x-=0.25
+            x -= 0.25
 
-        x, y = np.array([y,x])
+        x, y = np.array([y, x])
         ans.append((x, y, val))
     ans = np.array(ans)
 
     if ans is not None:
         for i in range(17):
-            if ans[i, 2]>0 and keypoints[i, 2]==0:
+            if ans[i, 2] > 0 and keypoints[i, 2] == 0:
                 keypoints[i, :2] = ans[i, :2]
                 keypoints[i, 2] = 1 
 
     return keypoints
+
 
 def multiperson(img, func, mode):
     """
@@ -121,15 +123,15 @@ def multiperson(img, func, mode):
     dets = np.minimum(dets, 1)
     grouped = parser.parse(np.float32([dets]), np.float32([tags]))[0]
 
-
     scores = [i[:, 2].mean() for  i in grouped]
 
     for i in range(len(grouped)):
         grouped[i] = refine(dets, tags, grouped[i])
 
     if len(grouped) > 0:
-        grouped[:,:,:2] = kpt_affine(grouped[:,:,:2] * 4, mat)
+        grouped[:, :, :2] = kpt_affine(grouped[:, :, :2] * 4, mat)
     return grouped, scores
+
 
 def coco_eval(prefix, dt, gt):
     """
@@ -215,6 +217,7 @@ def get_img(inp_res = 512):
     for i in tr:
         img = cv2.imread(paths[i])[:,:,::-1]
         yield anns[i], img
+
 
 def main():
     from train import init

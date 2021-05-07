@@ -1,5 +1,6 @@
-# Associative Embedding: Training Code
+# Associative Embedding: Updated Training Code
 
+## This is an unofficial implementation of the following paper (Deprecated functions are removed and it is now fully functional PyTorch training code):
 Multi-person pose estimation with PyTorch based on:
 
 **Associative Embedding: End-to-end Learning for Joint Detection and Grouping.**
@@ -20,9 +21,9 @@ Requirements:
 
 Before using the repository there are a couple of setup steps:
 
-First, you must compile the C implementation of the associative embedding loss. Go to ```extensions/AE/``` and call ```python build.py install```. If you run into errors with missing include files for CUDA, this can be addressed by first calling ```export CPATH=/path/to/cuda/include```.
+(**Different than original repo:** C wrappers are removed and all the loss functions are written in python)
 
-Next, set up the COCO dataset. You can download it from [here](http://cocodataset.org/#download), and update the paths in ```data/coco_pose/ref.py``` to the correct directories for both images and annotations. After that, make sure to install the COCO PythonAPI from [here](https://github.com/cocodataset/cocoapi).
+Set up the COCO dataset. You can download it from [here](http://cocodataset.org/#download), and update the paths in ```data/coco_pose/ref.py``` to the correct directories for both images and annotations. After that, make sure to install the COCO PythonAPI from [here](https://github.com/cocodataset/cocoapi).
 
 You should be all set after that! For reference, the code is organized as follows:
 - ```data/```: data loading and data augmentation code
